@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2E6A55">
+<title>Sign in · Recipe Box</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F3F5F1;--surface:#fff;--ink:#1F2622;--muted:#5E6962;--line:#DCE1DA;--accent:#2E6A55;--accent-ink:#fff;--danger:#A83A2C;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#131715;--surface:#1B201D;--ink:#E6EBE7;--muted:#9BA69F;--line:#2D3430;--accent:#72B899;--accent-ink:#0E1411;--danger:#E27A6B;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--ink);font:16px/1.5 "Karla",system-ui,sans-serif;padding:24px 16px}
+main{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:32px 28px}
+h1{font:400 2rem/1.1 "Young Serif",Georgia,serif;margin:0 0 4px}
+p{color:var(--muted);margin:0 0 24px}
+label{display:grid;gap:6px;margin-bottom:16px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+input{font:inherit;color:inherit;letter-spacing:normal;text-transform:none;font-weight:400;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:11px 12px}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{width:100%;font:inherit;font-weight:700;border:0;border-radius:8px;padding:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer;margin-top:4px}
+.err{color:var(--danger);font-size:.92rem;margin-bottom:16px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Recipe Box</h1>
+  <p>Sign in to see your recipes.</p>
+  {% if form.errors %}<div class="err">That username and password don't match. Try again.</div>{% endif %}
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <label for="id_username">Username<input type="text" name="username" id="id_username" autocomplete="username" autocapitalize="none" required autofocus></label>
+    <label for="id_password">Password<input type="password" name="password" id="id_password" autocomplete="current-password" required></label>
+    <input type="hidden" name="next" value="{{ next|default:'/' }}">
+    <button type="submit">Sign in</button>
+  </form>
+</main>
+</body>
+</html>
