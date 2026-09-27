@@ -79,8 +79,12 @@ if os.environ.get("DATABASE_URL"):
     db = dj_database_url.parse(os.environ["DATABASE_URL"], conn_max_age=600, conn_health_checks=True)
     db.setdefault("OPTIONS", {})["options"] = f"-c search_path={DB_SCHEMA}"
     DATABASES = {"default": db}
-else:
+elif DEBUG:
     DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "dev.sqlite3"}}
+elif os.environ.get("COLLECTSTATIC_ONLY") == "1":
+    DATABASES = {"default": {"ENGINE": "django.db.backends.dummy"}}
+else:
+    raise RuntimeError("DATABASE_URL is not set. Add the internal URL of bakery-stock-db in Render → Environment.")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
